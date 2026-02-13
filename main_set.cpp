@@ -27,16 +27,56 @@ int main(int argv, char** argc){
 
   //Read each file
   while (getline (cardFile1, line) && (line.length() > 0)){
-    player1.insert(Card(line));
+    player1.insert(Card(line[0], line[2]));
   }
   cardFile1.close();
 
 
   while (getline (cardFile2, line) && (line.length() > 0)){
-    player2.insert(Card(line));
+    player2.insert(Card(line[0], line[2]));
   }
   cardFile2.close();
   
-  
+  auto it1 = player1.begin();
+  auto end = player2.begin();
+  auto it2 = player2.begin();
+  end++;
+
+  while(end != player2.end()) {
+    it2 = end;
+    end++;
+  }
+
+  while(it1 != player1.end() && it2 != player2.end() && (it2 != player2.begin())) {
+    while(it1 != player1.end() && player2.find(*it1) == player2.end()) {
+      it1++;
+    }
+    if(it1 != player1.end() && (player2.find(*it1) != player2.end())) {
+      cout << "Alice picked matching card " << *it1 << endl;
+      auto temp = it1;
+      it1++;
+      if(*it2 == *temp) {
+        it2--;
+      }
+      player2.erase(*temp);
+      player1.erase(temp);
+    }
+    if(it1 != player1.end()) {
+      while(it2 != player2.end() && it2 != player2.begin() && (player1.find(*it2) == player1.end())) {
+        it2--;
+      }
+      if(it2 != player2.end() && player1.find(*it2) != player1.end()) {
+        cout << "Bob picked matching card " << *it2 << endl;
+        auto temp = it2;
+        it2++;
+        if(*it1 == *temp) {
+          it1++;
+        }
+        player1.erase(*temp);
+        player2.erase(temp);
+      }
+    }
+  }
+
   return 0;
 }

@@ -5,16 +5,29 @@
 #ifndef CARD_H
 #define CARD_H
 
+#include <iostream>
+
+using namespace std;
+
 class Card {
     public:
-        Card(const string& s);
-        char getSuite();
-        int getNumber();
+        Card(const char& s, const char& r);
+        char getSuit() const;
+        char getRank() const;
 
-        bool operator<(const card& other);
+        bool operator<(const Card& other) const;
+        bool operator==(const Card& other) const;
+        bool operator>(const Card& other) const;
+
+        bool operator<=(const Card& other) const;
+        bool operator!=(const Card& other) const;
+        bool operator>=(const Card& other) const;
+        
     private:
-        int number;
-        char suite;
+        char rank;
+        char suit;
 };
+
+ostream& operator<<(ostream& out, const Card& c);
 
 #endif
